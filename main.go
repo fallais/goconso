@@ -4,12 +4,12 @@ import (
 	"flag"
 	"fmt"
 
+	"goconso/edf/kilowatt"
+	"goconso/edf/subscription"
 	"goconso/equipment"
 	"goconso/equipment/basic"
 	"goconso/equipment/fridge"
 	"goconso/equipment/radiator"
-	"goconso/kilowatt"
-	"goconso/subscription"
 )
 
 func main() {
@@ -20,6 +20,7 @@ func main() {
 	flag.Parse()
 
 	sumUpDayNightSubscription(*hcPtr, *hpPtr)
+	fmt.Println()
 	sumUpBaseSubscription(*hcPtr + *hpPtr)
 
 	equipements := []equipment.Equipment{
