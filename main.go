@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 
 	"goconso/analyzer"
 	"goconso/equipment"
-	"goconso/equipment/basic"
 	"goconso/equipment/fridge"
+	"goconso/equipment/generic"
+	"goconso/equipment/hotwatertank"
 	"goconso/equipment/radiator"
 
 	"github.com/spf13/viper"
@@ -23,7 +24,7 @@ func main() {
 	flag.Parse()
 
 	// Read configuration file
-	data, err := ioutil.ReadFile(*configFilePtr)
+	data, err := os.ReadFile(*configFilePtr)
 	if err != nil {
 		log.Fatal("error while reading configuration file", err)
 	}
@@ -35,21 +36,30 @@ func main() {
 		log.Fatal("error when reading configuration file", err)
 	}
 
+	// Analyze the subscription
 	analyzer.Analyze(viper.GetString("option"), viper.GetStringMap("index"), viper.GetInt("puissance"))
 
-	equipements := []equipment.Equipment{
-		basic.NewBasicEquipment("Serveur NAS", 200, "always"),
-		basic.NewBasicEquipment("Machine à laver", 2000, "night"),
-		basic.NewBasicEquipment("Lave-vaisselle", 2000, "night"),
+	// Analyze the equipments
+	fmt.Println()
+	fmt.Println()
+	equipments := []equipment.Equipment{
+		generic.New("Serveur NAS", 200, "always"),
+		generic.New("Machine à laver", 2000, "night"),
+		generic.New("Lave-vaisselle", 2000, "night"),
+		generic.New("Four", 2500, "day"),
 		fridge.New(),
 		fridge.New(),
+		fridge.New(),
 		radiator.New(),
 		radiator.New(),
 		radiator.New(),
 		radiator.New(),
+		hotwatertank.New(),
+		generic.New("Ordinateur 1", 100, "day"),
+		generic.New("Ordinateur 2", 100, "day"),
+		generic.New("Ordinateur 3", 100, "day"),
+		generic.New("Livebox", 10, "always"),
+		generic.New("Lumières de la maison", 30*10, "day"),
 	}
-
-	fmt.Println()
-	fmt.Println()
-	fmt.Println("Total d'équipements :", len(equipements))
+	analyzer.AnalyzeEquipments(equipments)
 }

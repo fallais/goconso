@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"goconso/edf/subscription"
+	"goconso/equipment"
 )
 
 func Analyze(o string, index map[string]interface{}, p int) {
@@ -54,5 +55,34 @@ func Analyze(o string, index map[string]interface{}, p int) {
 		} else {
 			fmt.Printf("L'option `Base` vaut le coup, elle aurait couté %.2f€ (%.2f€ d'économies)", baseSummary.Total, baseSummary.Total-dayNightSummary.Total)
 		}
+	}
+}
+
+func AnalyzeEquipments(equipments []equipment.Equipment) {
+	fmt.Println("Total d'équipements :", len(equipments))
+
+	totalRunningDay := 0
+	totalRunningNight := 0
+
+	for _, equipment := range equipments {
+		switch equipment.OperatingHours() {
+		case "day":
+			totalRunningDay++
+		case "night":
+			totalRunningNight++
+		case "always":
+			totalRunningDay++
+			totalRunningNight++
+		}
+	}
+
+	if totalRunningDay > totalRunningNight {
+		fmt.Println("Vos équipements fonctionnent plutot le jour")
+	}
+	if totalRunningDay < totalRunningNight {
+		fmt.Println("Vos équipements fonctionnent plutot la nuit")
+	}
+	if totalRunningDay == totalRunningNight {
+		fmt.Println("Vos équipements fonctionnent aussi bien le jour que la nuit")
 	}
 }

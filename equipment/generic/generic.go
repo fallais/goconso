@@ -1,4 +1,4 @@
-package basic
+package generic
 
 import (
 	"goconso/equipment"
@@ -8,8 +8,8 @@ import (
 // Structure
 //------------------------------------------------------------------------------
 
-// A basic equipement can be anything.
-type basicEquipment struct {
+// A generic equipement can be anything.
+type genericEquipment struct {
 	name           string
 	power          int
 	operatingHours string
@@ -19,9 +19,9 @@ type basicEquipment struct {
 // Factory
 //------------------------------------------------------------------------------
 
-// NewBasicEquipment returns a new Equipment.
-func NewBasicEquipment(name string, power int, operatingHours string) equipment.Equipment {
-	return &basicEquipment{
+// New returns a new Equipment.
+func New(name string, power int, operatingHours string) equipment.Equipment {
+	return &genericEquipment{
 		name:           name,
 		power:          power,
 		operatingHours: operatingHours,
@@ -33,11 +33,11 @@ func NewBasicEquipment(name string, power int, operatingHours string) equipment.
 //------------------------------------------------------------------------------
 
 // Name
-func (c *basicEquipment) Name() string {
+func (c *genericEquipment) Name() string {
 	return c.name
 }
 
 // OperatingHours returns the operating hours.
-func (c *basicEquipment) OperatingHours() string {
+func (c *genericEquipment) OperatingHours() string {
 	return c.operatingHours
 }
