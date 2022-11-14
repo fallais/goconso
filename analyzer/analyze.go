@@ -7,13 +7,20 @@ import (
 	"goconso/edf/subscription"
 )
 
-func Analyze(o string, index map[string]interface{}) {
+func Analyze(o string, index map[string]interface{}, p int) {
 	option, err := parseOption(o)
 	if err != nil {
 		log.Fatal("error", err)
 	}
 
+	power, err := parsePower(p)
+	if err != nil {
+		log.Fatal("error", err)
+	}
+
 	fmt.Printf("# Votre option actuelle : %s", option)
+	fmt.Println()
+	fmt.Printf("# Votre puissance actuelle : %dkVA", power)
 	fmt.Println()
 	fmt.Println("# Détails")
 
@@ -22,7 +29,7 @@ func Analyze(o string, index map[string]interface{}) {
 	switch option {
 	case subscription.BaseOption:
 		// Calculate the two summaries
-		baseSummary = sumUpBaseSubscription(index["total"].(int))
+		baseSummary = sumUpBaseSubscription(index["total"].(int), power)
 
 		fmt.Printf("Abonnement : %.2f €", baseSummary.Subscription)
 		fmt.Println()
@@ -30,8 +37,8 @@ func Analyze(o string, index map[string]interface{}) {
 		fmt.Println()
 		fmt.Printf("L'option `HC/HP` vaut pas le coup si la majorité de votre consommation se fait la nuit")
 	case subscription.DayNightOption:
-		dayNightSummary = sumUpDayNightSubscription(index["hc"].(int), index["hp"].(int))
-		baseSummary = sumUpBaseSubscription(dayNightSummary.TotalIndex)
+		dayNightSummary = sumUpDayNightSubscription(index["hc"].(int), index["hp"].(int), power)
+		baseSummary = sumUpBaseSubscription(dayNightSummary.TotalIndex, power)
 
 		fmt.Printf("## Prix des heures creuses : %.2f € (%d kWh)", dayNightSummary.PriceHC, index["hc"].(int))
 		fmt.Println()

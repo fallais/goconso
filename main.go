@@ -35,7 +35,7 @@ func main() {
 		log.Fatal("error when reading configuration file", err)
 	}
 
-	analyzer.Analyze(viper.GetString("option"), viper.GetStringMap("index"))
+	analyzer.Analyze(viper.GetString("option"), viper.GetStringMap("index"), viper.GetInt("puissance"))
 
 	equipements := []equipment.Equipment{
 		basic.NewBasicEquipment("Serveur NAS", 200, "always"),

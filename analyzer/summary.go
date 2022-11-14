@@ -19,13 +19,13 @@ type BaseSubscriptionSummary struct {
 	Total        float64
 }
 
-func sumUpDayNightSubscription(indexHC, indexHP int) *DayNightSubscriptionSummary {
+func sumUpDayNightSubscription(indexHC, indexHP int, power subscription.Power) *DayNightSubscriptionSummary {
 	// Calculate the price for HC and HP
 	priceHC := float64(indexHC) * kilowatt.KiloWattHourOffPeakPrice
 	priceHP := float64(indexHP) * kilowatt.KiloWattHourFullHoursPrice
 
 	// Calculate the subscription for one yea
-	subscription := subscription.PerYearSubscription(subscription.DayNightOption, subscription.Power12kVA)
+	subscription := subscription.PerYearSubscription(subscription.DayNightOption, power)
 
 	return &DayNightSubscriptionSummary{
 		PriceHC:      priceHC,
@@ -36,9 +36,9 @@ func sumUpDayNightSubscription(indexHC, indexHP int) *DayNightSubscriptionSummar
 	}
 }
 
-func sumUpBaseSubscription(index int) *BaseSubscriptionSummary {
+func sumUpBaseSubscription(index int, power subscription.Power) *BaseSubscriptionSummary {
 	// Calculate the subscription for one yea
-	subscription := subscription.PerYearSubscription(subscription.BaseOption, subscription.Power12kVA)
+	subscription := subscription.PerYearSubscription(subscription.BaseOption, power)
 
 	return &BaseSubscriptionSummary{
 		TotalIndex:   index,
