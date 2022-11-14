@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
+	"io/ioutil"
+	"log"
 
 	"goconso/edf/kilowatt"
 	"goconso/edf/subscription"
@@ -10,18 +13,32 @@ import (
 	"goconso/equipment/basic"
 	"goconso/equipment/fridge"
 	"goconso/equipment/radiator"
+
+	"github.com/spf13/viper"
 )
 
 func main() {
-	hcPtr := flag.Int("hc", 1500, "Heures creuses")
-	hpPtr := flag.Int("hp", 800, "Heures pleines")
+	configFilePtr := flag.String("c", "ma_conso.yml", "Feuille de consommation")
 
 	// Parse the flags
 	flag.Parse()
 
-	sumUpDayNightSubscription(*hcPtr, *hpPtr)
+	// Read configuration file
+	data, err := ioutil.ReadFile(*configFilePtr)
+	if err != nil {
+		log.Fatal("error while reading configuration file", err)
+	}
+
+	// Initialize configuration values with Viper
+	viper.SetConfigType("yaml")
+	err = viper.ReadConfig(bytes.NewBuffer(data))
+	if err != nil {
+		log.Fatal("error when reading configuration file", err)
+	}
+
+	sumUpDayNightSubscription(viper.GetInt("index.hc"), viper.GetInt("index.hp"))
 	fmt.Println()
-	sumUpBaseSubscription(*hcPtr + *hpPtr)
+	sumUpBaseSubscription(viper.GetInt("index.hc") + viper.GetInt("index.hp"))
 
 	equipements := []equipment.Equipment{
 		basic.NewBasicEquipment("Serveur NAS", 200, "always"),
