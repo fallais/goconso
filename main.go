@@ -7,8 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 
-	"goconso/edf/kilowatt"
-	"goconso/edf/subscription"
+	"goconso/analyzer"
 	"goconso/equipment"
 	"goconso/equipment/basic"
 	"goconso/equipment/fridge"
@@ -36,9 +35,7 @@ func main() {
 		log.Fatal("error when reading configuration file", err)
 	}
 
-	sumUpDayNightSubscription(viper.GetInt("index.hc"), viper.GetInt("index.hp"))
-	fmt.Println()
-	sumUpBaseSubscription(viper.GetInt("index.hc") + viper.GetInt("index.hp"))
+	analyzer.Analyze(viper.GetString("option"), viper.GetStringMap("index"))
 
 	equipements := []equipment.Equipment{
 		basic.NewBasicEquipment("Serveur NAS", 200, "always"),
@@ -51,35 +48,8 @@ func main() {
 		radiator.New(),
 		radiator.New(),
 	}
+
+	fmt.Println()
+	fmt.Println()
 	fmt.Println("Total d'équipements :", len(equipements))
-}
-
-func sumUpDayNightSubscription(indexHC, indexHP int) {
-	totalIndex := indexHC + indexHP
-	subscription := subscription.PerYearSubscription(subscription.DayNightOption, subscription.Power12kVA)
-	priceHC := float64(indexHC) * kilowatt.KiloWattHourOffPeakPrice
-	priceHP := float64(indexHP) * kilowatt.KiloWattHourFullHoursPrice
-	priceTotal := priceHC + priceHP + subscription
-
-	fmt.Println("# En option `HV/HP`")
-	fmt.Printf("Heures creuses : %.2f € (%d kWh)", priceHC, indexHC)
-	fmt.Println()
-	fmt.Printf("Heures pleines : %.2f € (%d kWh)", priceHP, indexHP)
-	fmt.Println()
-	fmt.Printf("Abonnement : %.2f €", subscription)
-	fmt.Println()
-	fmt.Printf("Consommation totale : %.2f € (%d kWh)", priceTotal, totalIndex)
-	fmt.Println()
-}
-
-func sumUpBaseSubscription(index int) {
-	totalIndex := index
-	subscription := subscription.PerYearSubscription(subscription.BaseOption, subscription.Power12kVA)
-	priceTotal := float64(index)*kilowatt.KiloWattHourBasePrice + subscription
-
-	fmt.Println("# En option `Base`")
-	fmt.Printf("Abonnement : %.2f €", subscription)
-	fmt.Println()
-	fmt.Printf("Consommation totale : %.2f € (%d kWh)", priceTotal, totalIndex)
-	fmt.Println()
 }
