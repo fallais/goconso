@@ -43,9 +43,9 @@ func Analyze(o string, index map[string]interface{}) {
 		fmt.Println()
 
 		if baseSummary.Total >= dayNightSummary.Total {
-			fmt.Printf("L'option `Base` ne vaut pas le coup, elle aurait couté %.2f", baseSummary.Total)
+			fmt.Printf("L'option `Base` ne vaut pas le coup, elle aurait couté %.2f€ (plus chère de %.2f€)", baseSummary.Total, baseSummary.Total-dayNightSummary.Total)
 		} else {
-			fmt.Printf("L'option `Base` vaut pas le coup, elle aurait couté %.2f", baseSummary.Total)
+			fmt.Printf("L'option `Base` vaut le coup, elle aurait couté %.2f€ (%.2f€ d'économies)", baseSummary.Total, baseSummary.Total-dayNightSummary.Total)
 		}
 	}
 }
