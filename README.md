@@ -10,10 +10,27 @@ Create a file `ma_conso.yml`, like this:
 # Option (base ou heures_creuses)
 option: "heures_creuses"
 
+# Puissance (en KVA)
+puissance: 12
+
 # Index
 index:
   heures_creuses: 1600
   heures_pleines: 1200
+```
+
+or 
+
+```yml
+# Option (base ou heures_creuses)
+option: "base"
+
+# Puissance (en KVA)
+puissance: 12
+
+# Index
+index:
+  total: 3000
 ```
 
 ## Usage
