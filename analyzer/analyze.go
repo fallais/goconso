@@ -70,6 +70,7 @@ func Analyze(o string, index map[string]interface{}, p int) {
 		fmt.Println()
 		fmt.Printf("Les heures creuses représentent %d%% de la consommation. Les heures pleines représentent %d%% de la consommation", percentHC, percentHP)
 		fmt.Println()
+		fmt.Printf("Le seuil de rantabilité est : %d%%", calculateBreakEven(dayNightSummary.TotalIndex, power))
 	}
 }
 
