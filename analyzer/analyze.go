@@ -11,12 +11,12 @@ import (
 func Analyze(o string, index map[string]interface{}, p int) {
 	option, err := parseOption(o)
 	if err != nil {
-		log.Fatal("error when parsing the option:", err)
+		log.Fatal("error when parsing the option: ", err)
 	}
 
 	power, err := parsePower(p)
 	if err != nil {
-		log.Fatal("error when parsing the power", err)
+		log.Fatal("error when parsing the power: ", err)
 	}
 
 	fmt.Printf("# Votre option actuelle : %s", option)

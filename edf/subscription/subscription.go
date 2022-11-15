@@ -6,7 +6,7 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-var SubscriptionsPerMonth = map[Option]map[Power]float64{
+var subscriptions = map[Option]map[Power]float64{
 	BaseOption: {
 		Power3kVA:  8.65,
 		Power6kVA:  11.36,
@@ -24,17 +24,33 @@ var SubscriptionsPerMonth = map[Option]map[Power]float64{
 	},
 }
 
-// PerYearSubscription returns the amount of the subscription for one year.
-func PerYearSubscription(option Option, power Power) (float64, error) {
-	if option < BaseOption || option > OffPeakHoursOption {
+// BaseAvailablePowers are the available powers.
+var BaseAvailablePowers = []Power{Power3kVA, Power6kVA, Power9kVA, Power12kVA, Power15kVA, Power18kVA}
+
+// OffPeakHoursAvailablePowers are the available powers.
+var OffPeakHoursAvailablePowers = []Power{Power6kVA, Power9kVA, Power12kVA, Power15kVA, Power18kVA}
+
+// PerMonthSubscription returns the amount of the subscription for one month.
+func PerMonthSubscription(option Option, power Power) (float64, error) {
+	switch option {
+	case BaseOption:
+		if !slices.Contains(BaseAvailablePowers, power) {
+			return 0, fmt.Errorf("invalid power (%dkVA) for this option (%s)", power, option)
+		}
+	case OffPeakHoursOption:
+		if !slices.Contains(OffPeakHoursAvailablePowers, power) {
+			return 0, fmt.Errorf("invalid power (%dkVA) for this option (%s)", power, option)
+		}
+	default:
 		return 0, fmt.Errorf("option does not exist")
 	}
-	if option == BaseOption && !slices.Contains([]Power{Power3kVA, Power6kVA, Power9kVA, Power12kVA, Power15kVA, Power18kVA}, power) {
-		return 0, fmt.Errorf("invalid power for this option")
-	}
-	if option == OffPeakHoursOption && !slices.Contains([]Power{Power6kVA, Power9kVA, Power12kVA, Power15kVA, Power18kVA}, power) {
-		return 0, fmt.Errorf("invalid power for this option")
-	}
 
-	return SubscriptionsPerMonth[option][power] * 12, nil
+	return subscriptions[option][power], nil
+}
+
+// PerYearSubscription returns the amount of the subscription for one year.
+func PerYearSubscription(option Option, power Power) (float64, error) {
+	pm, err := PerMonthSubscription(option, power)
+
+	return pm * 12, err
 }

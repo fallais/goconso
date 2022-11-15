@@ -30,7 +30,7 @@ func sumUpDayNightSubscription(indexHC, indexHP int, power subscription.Power) *
 	// Calculate the subscription for one yea
 	subscription, err := subscription.PerYearSubscription(subscription.OffPeakHoursOption, power)
 	if err != nil {
-		log.Fatal("error", err)
+		log.Fatal("error when calculating the subscription: ", err)
 	}
 
 	return &DayNightSubscriptionSummary{
@@ -48,7 +48,7 @@ func sumUpBaseSubscription(index int, power subscription.Power) *BaseSubscriptio
 	// Calculate the subscription for one year
 	subscription, err := subscription.PerYearSubscription(subscription.BaseOption, power)
 	if err != nil {
-		log.Fatal("error", err)
+		log.Fatal("error when calculating the subscription: ", err)
 	}
 
 	return &BaseSubscriptionSummary{
