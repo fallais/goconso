@@ -7,13 +7,13 @@
 Create a file `ma_conso.yml`, like this:
 
 ```yml
-# Option (base ou hc_hp)
-option: "hc_hp"
+# Option (base ou heures_creuses)
+option: "heures_creuses"
 
 # Index
 index:
-  hc: 1600
-  hp: 1200
+  heures_creuses: 1600
+  heures_pleines: 1200
 ```
 
 ## Usage

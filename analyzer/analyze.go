@@ -36,19 +36,28 @@ func Analyze(o string, index map[string]interface{}, p int) {
 		fmt.Println()
 		fmt.Printf("Prix total : %.2f € (%d kWh)", baseSummary.Total, baseSummary.TotalIndex)
 		fmt.Println()
+		fmt.Println()
+		fmt.Println("# Conclusion")
 		fmt.Printf("L'option `HC/HP` vaut pas le coup si la majorité de votre consommation se fait la nuit")
 	case subscription.OffPeakHoursOption:
-		dayNightSummary = sumUpDayNightSubscription(index["hc"].(int), index["hp"].(int), power)
+		// Get the indexes
+		hcIndex := index["heures_creuses"].(int)
+		hpIndex := index["heures_pleines"].(int)
+
+		// Calculate the two summaries
+		dayNightSummary = sumUpDayNightSubscription(hcIndex, hpIndex, power)
 		baseSummary = sumUpBaseSubscription(dayNightSummary.TotalIndex, power)
 
-		fmt.Printf("## Prix des heures creuses : %.2f € (%d kWh)", dayNightSummary.PriceHC, index["hc"].(int))
+		fmt.Printf("## Prix des heures creuses : %.2f € (%d kWh)", dayNightSummary.PriceHC, hcIndex)
 		fmt.Println()
-		fmt.Printf("## Prix des heures pleines : %.2f € (%d kWh)", dayNightSummary.PriceHP, index["hp"].(int))
+		fmt.Printf("## Prix des heures pleines : %.2f € (%d kWh)", dayNightSummary.PriceHP, hpIndex)
 		fmt.Println()
 		fmt.Printf("## Abonnement : %.2f €", dayNightSummary.Subscription)
 		fmt.Println()
 		fmt.Printf("## Prix total : %.2f € (%d kWh)", dayNightSummary.Total, dayNightSummary.TotalIndex)
 		fmt.Println()
+		fmt.Println()
+		fmt.Println("# Conclusion")
 
 		if baseSummary.Total >= dayNightSummary.Total {
 			fmt.Printf("L'option `Base` ne vaut pas le coup, elle aurait couté %.2f€ (plus chère de %.2f€)", baseSummary.Total, baseSummary.Total-dayNightSummary.Total)
