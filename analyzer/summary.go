@@ -3,10 +3,13 @@ package analyzer
 import (
 	"goconso/edf/kilowatt"
 	"goconso/edf/subscription"
+	"log"
 )
 
 type DayNightSubscriptionSummary struct {
+	IndexHC      int
 	PriceHC      float64
+	IndexHP      int
 	PriceHP      float64
 	TotalIndex   int
 	Subscription float64
@@ -25,10 +28,15 @@ func sumUpDayNightSubscription(indexHC, indexHP int, power subscription.Power) *
 	priceHP := float64(indexHP) * kilowatt.KiloWattHourFullHoursPrice
 
 	// Calculate the subscription for one yea
-	subscription := subscription.PerYearSubscription(subscription.DayNightOption, power)
+	subscription, err := subscription.PerYearSubscription(subscription.OffPeakHoursOption, power)
+	if err != nil {
+		log.Fatal("error", err)
+	}
 
 	return &DayNightSubscriptionSummary{
+		IndexHC:      indexHC,
 		PriceHC:      priceHC,
+		IndexHP:      indexHP,
 		PriceHP:      float64(indexHP) * kilowatt.KiloWattHourFullHoursPrice,
 		TotalIndex:   indexHC + indexHP,
 		Subscription: subscription,
@@ -37,8 +45,11 @@ func sumUpDayNightSubscription(indexHC, indexHP int, power subscription.Power) *
 }
 
 func sumUpBaseSubscription(index int, power subscription.Power) *BaseSubscriptionSummary {
-	// Calculate the subscription for one yea
-	subscription := subscription.PerYearSubscription(subscription.BaseOption, power)
+	// Calculate the subscription for one year
+	subscription, err := subscription.PerYearSubscription(subscription.BaseOption, power)
+	if err != nil {
+		log.Fatal("error", err)
+	}
 
 	return &BaseSubscriptionSummary{
 		TotalIndex:   index,

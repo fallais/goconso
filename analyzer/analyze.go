@@ -11,12 +11,12 @@ import (
 func Analyze(o string, index map[string]interface{}, p int) {
 	option, err := parseOption(o)
 	if err != nil {
-		log.Fatal("error", err)
+		log.Fatal("error when parsing the option:", err)
 	}
 
 	power, err := parsePower(p)
 	if err != nil {
-		log.Fatal("error", err)
+		log.Fatal("error when parsing the power", err)
 	}
 
 	fmt.Printf("# Votre option actuelle : %s", option)
@@ -37,7 +37,7 @@ func Analyze(o string, index map[string]interface{}, p int) {
 		fmt.Printf("Prix total : %.2f € (%d kWh)", baseSummary.Total, baseSummary.TotalIndex)
 		fmt.Println()
 		fmt.Printf("L'option `HC/HP` vaut pas le coup si la majorité de votre consommation se fait la nuit")
-	case subscription.DayNightOption:
+	case subscription.OffPeakHoursOption:
 		dayNightSummary = sumUpDayNightSubscription(index["hc"].(int), index["hp"].(int), power)
 		baseSummary = sumUpBaseSubscription(dayNightSummary.TotalIndex, power)
 
@@ -55,6 +55,12 @@ func Analyze(o string, index map[string]interface{}, p int) {
 		} else {
 			fmt.Printf("L'option `Base` vaut le coup, elle aurait couté %.2f€ (%.2f€ d'économies)", baseSummary.Total, baseSummary.Total-dayNightSummary.Total)
 		}
+
+		percentHC := dayNightSummary.IndexHC * 100 / dayNightSummary.TotalIndex
+		percentHP := dayNightSummary.IndexHP * 100 / dayNightSummary.TotalIndex
+		fmt.Println()
+		fmt.Printf("Les heures creuses représentent %d%% de la consommation. Les heures pleines représentent %d%% de la consommation", percentHC, percentHP)
+		fmt.Println()
 	}
 }
 

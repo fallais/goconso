@@ -10,10 +10,10 @@ func parseOption(option string) (subscription.Option, error) {
 	switch option {
 	case "base":
 		return subscription.BaseOption, nil
-	case "hc_hp":
-		return subscription.DayNightOption, nil
+	case "heures_creuses":
+		return subscription.OffPeakHoursOption, nil
 	default:
-		return "", fmt.Errorf("unkown option")
+		return 0, fmt.Errorf("unkown option: %s", option)
 	}
 }
 
@@ -32,6 +32,6 @@ func parsePower(power int) (subscription.Power, error) {
 	case 18:
 		return subscription.Power18kVA, nil
 	default:
-		return 0, fmt.Errorf("unkown option")
+		return 0, fmt.Errorf("unkown power: %d", power)
 	}
 }
