@@ -1,15 +1,15 @@
-package fridge
+package generic
 
 import (
-	"goconso/equipment"
+	"goconso/internal/equipment"
 )
 
 //------------------------------------------------------------------------------
 // Structure
 //------------------------------------------------------------------------------
 
-// A fridge is an equipement that freshly stores foods.
-type fridge struct {
+// A generic equipement can be anything.
+type genericEquipment struct {
 	name           string
 	power          int
 	operatingHours string
@@ -19,16 +19,11 @@ type fridge struct {
 // Factory
 //------------------------------------------------------------------------------
 
-// NewFridge returns a new Equipment.
-func New() equipment.Equipment {
-	return NewWithOperatingHours("always")
-}
-
-// NewWithOperatingHours returns a new Equipment with given operating hours.
-func NewWithOperatingHours(operatingHours string) equipment.Equipment {
-	return &fridge{
-		name:           "Frigo",
-		power:          200,
+// New returns a new Equipment.
+func New(name string, power int, operatingHours string) equipment.Equipment {
+	return &genericEquipment{
+		name:           name,
+		power:          power,
 		operatingHours: operatingHours,
 	}
 }
@@ -38,11 +33,11 @@ func NewWithOperatingHours(operatingHours string) equipment.Equipment {
 //------------------------------------------------------------------------------
 
 // Name
-func (c *fridge) Name() string {
+func (c *genericEquipment) Name() string {
 	return c.name
 }
 
 // OperatingHours returns the operating hours.
-func (c *fridge) OperatingHours() string {
+func (c *genericEquipment) OperatingHours() string {
 	return c.operatingHours
 }

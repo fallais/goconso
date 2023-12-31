@@ -1,12 +1,6 @@
 package analyzer
 
-import (
-	"fmt"
-
-	"goconso/edf/subscription"
-)
-
-func parseOption(option string) (subscription.Option, error) {
+/* func parseOption(option string) (subscription.Option, error) {
 	switch option {
 	case "base":
 		return subscription.BaseOption, nil
@@ -34,4 +28,4 @@ func parsePower(power int) (subscription.Power, error) {
 	default:
 		return 0, fmt.Errorf("unkown power: %d", power)
 	}
-}
+} */

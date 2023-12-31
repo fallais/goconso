@@ -8,11 +8,11 @@ import (
 	"os"
 
 	"goconso/analyzer"
-	"goconso/equipment"
-	"goconso/equipment/fridge"
-	"goconso/equipment/generic"
-	"goconso/equipment/hotwatertank"
-	"goconso/equipment/radiator"
+	"goconso/internal/equipment"
+	"goconso/internal/equipment/fridge"
+	"goconso/internal/equipment/generic"
+	"goconso/internal/equipment/hotwatertank"
+	"goconso/internal/equipment/radiator"
 
 	"github.com/spf13/viper"
 )

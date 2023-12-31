@@ -1,17 +1,16 @@
-package hotwatertank
+package dishwasher
 
 import (
-	"goconso/equipment"
+	"goconso/internal/equipment"
 )
 
 //------------------------------------------------------------------------------
 // Structure
 //------------------------------------------------------------------------------
 
-// A hotwatertank is an equipement that boils water for shower.
-type hotwatertank struct {
+// A dishwasher is an equipement that washes dishes.
+type dishwasher struct {
 	name           string
-	power          int
 	operatingHours string
 }
 
@@ -21,14 +20,16 @@ type hotwatertank struct {
 
 // New returns a new Equipment.
 func New() equipment.Equipment {
-	return NewWithOperatingHours("always")
+	return &dishwasher{
+		name:           "Lave-vaiselle",
+		operatingHours: "night",
+	}
 }
 
 // NewWithOperatingHours returns a new Equipment with given operating hours.
 func NewWithOperatingHours(operatingHours string) equipment.Equipment {
-	return &hotwatertank{
-		name:           "Ballon d'eau chaude",
-		power:          200,
+	return &dishwasher{
+		name:           "Lave-vaiselle",
 		operatingHours: operatingHours,
 	}
 }
@@ -37,12 +38,12 @@ func NewWithOperatingHours(operatingHours string) equipment.Equipment {
 // Functions
 //------------------------------------------------------------------------------
 
-// Name
-func (c *hotwatertank) Name() string {
+// Name return the name.
+func (c *dishwasher) Name() string {
 	return c.name
 }
 
 // OperatingHours returns the operating hours.
-func (c *hotwatertank) OperatingHours() string {
+func (c *dishwasher) OperatingHours() string {
 	return c.operatingHours
 }

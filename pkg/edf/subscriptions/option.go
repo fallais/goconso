@@ -1,4 +1,4 @@
-package subscription
+package subscriptions
 
 // Option is an EDF option.
 type Option int

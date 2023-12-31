@@ -1,16 +1,19 @@
-package dishwasher
+package radiator
 
 import (
-	"goconso/equipment"
+	"goconso/internal/equipment"
 )
+
+const DefaultOperatingHours = "always"
 
 //------------------------------------------------------------------------------
 // Structure
 //------------------------------------------------------------------------------
 
-// A dishwasher is an equipement that washes dishes.
-type dishwasher struct {
+// A radiator is an equipement that warms a room.
+type radiator struct {
 	name           string
+	power          int
 	operatingHours string
 }
 
@@ -18,18 +21,16 @@ type dishwasher struct {
 // Factory
 //------------------------------------------------------------------------------
 
-// New returns a new Equipment.
+// NewRadiator returns a new Equipment.
 func New() equipment.Equipment {
-	return &dishwasher{
-		name:           "Lave-vaiselle",
-		operatingHours: "night",
-	}
+	return NewWithOperatingHours(DefaultOperatingHours)
 }
 
 // NewWithOperatingHours returns a new Equipment with given operating hours.
 func NewWithOperatingHours(operatingHours string) equipment.Equipment {
-	return &dishwasher{
-		name:           "Lave-vaiselle",
+	return &radiator{
+		name:           "Radiateur",
+		power:          2000,
 		operatingHours: operatingHours,
 	}
 }
@@ -38,12 +39,12 @@ func NewWithOperatingHours(operatingHours string) equipment.Equipment {
 // Functions
 //------------------------------------------------------------------------------
 
-// Name return the name.
-func (c *dishwasher) Name() string {
+// Name
+func (c *radiator) Name() string {
 	return c.name
 }
 
 // OperatingHours returns the operating hours.
-func (c *dishwasher) OperatingHours() string {
+func (c *radiator) OperatingHours() string {
 	return c.operatingHours
 }

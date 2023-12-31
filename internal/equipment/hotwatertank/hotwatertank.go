@@ -1,17 +1,15 @@
-package radiator
+package hotwatertank
 
 import (
-	"goconso/equipment"
+	"goconso/internal/equipment"
 )
-
-const DefaultOperatingHours = "always"
 
 //------------------------------------------------------------------------------
 // Structure
 //------------------------------------------------------------------------------
 
-// A radiator is an equipement that warms a room.
-type radiator struct {
+// A hotwatertank is an equipement that boils water for shower.
+type hotwatertank struct {
 	name           string
 	power          int
 	operatingHours string
@@ -21,16 +19,16 @@ type radiator struct {
 // Factory
 //------------------------------------------------------------------------------
 
-// NewRadiator returns a new Equipment.
+// New returns a new Equipment.
 func New() equipment.Equipment {
-	return NewWithOperatingHours(DefaultOperatingHours)
+	return NewWithOperatingHours("always")
 }
 
 // NewWithOperatingHours returns a new Equipment with given operating hours.
 func NewWithOperatingHours(operatingHours string) equipment.Equipment {
-	return &radiator{
-		name:           "Radiateur",
-		power:          2000,
+	return &hotwatertank{
+		name:           "Ballon d'eau chaude",
+		power:          200,
 		operatingHours: operatingHours,
 	}
 }
@@ -40,11 +38,11 @@ func NewWithOperatingHours(operatingHours string) equipment.Equipment {
 //------------------------------------------------------------------------------
 
 // Name
-func (c *radiator) Name() string {
+func (c *hotwatertank) Name() string {
 	return c.name
 }
 
 // OperatingHours returns the operating hours.
-func (c *radiator) OperatingHours() string {
+func (c *hotwatertank) OperatingHours() string {
 	return c.operatingHours
 }

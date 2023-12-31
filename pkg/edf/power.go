@@ -1,4 +1,4 @@
-package subscription
+package edf
 
 type Power int
 
