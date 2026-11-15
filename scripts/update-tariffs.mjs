@@ -19,6 +19,18 @@ const files = [
     firstColumns:
       "DATE_DEBUT;DATE_FIN;P_SOUSCRITE;PART_FIXE_HT;PART_FIXE_TTC;PART_VARIABLE_HC_HT;PART_VARIABLE_HC_TTC;PART_VARIABLE_HP_HT;PART_VARIABLE_HP_TTC",
   },
+  {
+    csv: "Option_Tempo.csv",
+    out: "src/edf/tempoTariffs.ts",
+    constName: "TEMPO_TARIFFS_CSV",
+    header: 'EDF regulated "Tempo" tariffs (yearly fixed part and kWh prices per day color, in €).',
+    firstColumns:
+      "DATE_DEBUT;DATE_FIN;P_SOUSCRITE;PART_FIXE_HT;PART_FIXE_TTC;" +
+      ["Bleu", "Blanc", "Rouge"]
+        .flatMap((c) => [`HC${c}`, `HP${c}`])
+        .flatMap((k) => [`PART_VARIABLE_${k}_HT`, `PART_VARIABLE_${k}_TTC`])
+        .join(";"),
+  },
 ];
 
 for (const f of files) {

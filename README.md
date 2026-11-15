@@ -1,38 +1,32 @@
 # GoConso
 
-**GoConso** helps you **understand** your electrical consumption and **optimize** it.
+**GoConso** helps you **understand** your electrical consumption and pick the cheapest regulated EDF option.
 
 It runs entirely in the browser and is published on GitHub Pages: https://fallais.github.io/goconso/
 
-- Compare your current EDF option (`Base` or `Heures creuses`) using your meter indexes.
-- List your equipments and see whether they mostly run during the day or the night.
-- Your inputs are kept in the browser's local storage, nothing is sent anywhere.
+- Compares **Base**, **Heures creuses** and **Tempo** from your yearly consumption, whatever your current option.
+- Shows the off-peak share above which Heures creuses beats Base, and lets you tune the Tempo assumptions.
+- Estimates the yearly cost of each appliance, the share used at night and whether your subscribed power fits.
+- Share a simulation with a link. Inputs are kept in the browser's local storage, nothing is sent anywhere.
 
 ## Configuration file
 
-You can fill the form directly, or import an existing `ma_conso.yml`:
+You can fill the form directly, or import a `ma_conso.yml` file:
 
 ```yml
-# Option (base ou heures_creuses)
+# Option (base, heures_creuses ou tempo)
 option: "heures_creuses"
 
-# Puissance (en KVA)
+# Puissance (en kVA)
 puissance: 9
 
-# Index
+# Consommation sur 12 mois (en kWh)
 index:
   heures_creuses: 1900
   heures_pleines: 2800
 ```
 
-or
-
-```yml
-option: "base"
-puissance: 6
-index:
-  total: 4700
-```
+Use `total` for the `base` option, and `bleu_hc`, `bleu_hp`, `blanc_hc`, `blanc_hp`, `rouge_hc`, `rouge_hp` for `tempo`.
 
 ## Development
 
@@ -43,9 +37,14 @@ npm test        # unit tests
 npm run build   # production build in dist/
 ```
 
-Tariffs come from the [CRE open data](https://www.data.gouv.fr/datasets/historique-des-tarifs-reglementes-de-vente-delectricite-pour-les-consommateurs-residentiels) and are stored in `src/edf/baseTariffs.ts` and `src/edf/offpeakTariffs.ts`. Run `npm run update-tariffs` to refresh them.
+Built with Vite, TypeScript and Preact.
+
+## Tariffs
+
+Tariffs come from the [CRE open data](https://www.data.gouv.fr/datasets/historique-des-tarifs-reglementes-de-vente-delectricite-pour-les-consommateurs-residentiels) and are stored in `src/edf/*Tariffs.ts`. Run `npm run update-tariffs` to refresh them.
+
+The `Update tariffs` workflow does it monthly and opens a pull request when they change. It requires **Settings > Actions > General > Allow GitHub Actions to create and approve pull requests**.
 
 ## Deployment
 
-Every push on `main` is built and deployed by `.github/workflows/pages.yml`.
-In the repository settings, set **Pages > Source** to **GitHub Actions**.
+Every push on `main` is built and deployed to GitHub Pages by `.github/workflows/pages.yml`.

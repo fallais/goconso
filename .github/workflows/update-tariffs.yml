@@ -1,0 +1,44 @@
+name: Update tariffs
+
+on:
+  schedule:
+    - cron: "0 6 3 * *" # monthly
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run update-tariffs
+      # Opening the PR requires "Allow GitHub Actions to create and approve pull requests"
+      # in Settings > Actions > General.
+      - name: Open a pull request if tariffs changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet; then
+            echo "Tariffs are up to date."
+            exit 0
+          fi
+          npm test
+          branch="tariffs/$(date +%Y-%m-%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git commit -am "Update EDF tariffs from CRE open data"
+          git push --force origin "$branch"
+          if gh pr list --head "$branch" --json number --jq 'length' | grep -q '^0$'; then
+            gh pr create --head "$branch" \
+              --title "Update EDF tariffs ($(date +%Y-%m-%d))" \
+              --body "New regulated tariffs published in the CRE open data. Merging deploys them."
+          fi

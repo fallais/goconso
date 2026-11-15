@@ -3,76 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GoConso — comprendre et optimiser sa consommation électrique</title>
-    <link rel="stylesheet" href="./src/style.css" />
+    <meta name="description" content="Comparez les options Base, Heures creuses et Tempo d'EDF à partir de votre consommation." />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FFD60A'/%3E%3Cpath d='M18 4 8 18h7l-2 10 10-14h-7z' fill='%23141410'/%3E%3C/svg%3E" />
+    <title>GoConso · Base, Heures creuses ou Tempo ?</title>
   </head>
   <body>
-    <header>
-      <h1>GoConso</h1>
-      <p>Comprendre votre consommation électrique et choisir la bonne option EDF.</p>
-    </header>
-
-    <main>
-      <section class="card">
-        <div class="card-title">
-          <h2>Mon abonnement</h2>
-          <label class="button secondary">
-            Importer <code>ma_conso.yml</code>
-            <input id="import" type="file" accept=".yml,.yaml" hidden />
-          </label>
-        </div>
-        <form id="subscription" class="grid">
-          <label>
-            Option
-            <select name="option">
-              <option value="base">Base</option>
-              <option value="heures_creuses">Heures creuses</option>
-            </select>
-          </label>
-          <label>
-            Puissance
-            <select name="power"></select>
-          </label>
-          <label data-option="base">
-            Index total (kWh)
-            <input name="total" type="number" min="0" step="1" />
-          </label>
-          <label data-option="heures_creuses">
-            Heures creuses (kWh)
-            <input name="heures_creuses" type="number" min="0" step="1" />
-          </label>
-          <label data-option="heures_creuses">
-            Heures pleines (kWh)
-            <input name="heures_pleines" type="number" min="0" step="1" />
-          </label>
-        </form>
-        <p id="error" class="error" hidden></p>
-      </section>
-
-      <section class="card" id="results"></section>
-
-      <section class="card">
-        <div class="card-title">
-          <h2>Mes équipements</h2>
-          <div class="actions">
-            <button type="button" id="reset-equipments" class="secondary">Réinitialiser</button>
-            <button type="button" id="add-equipment">Ajouter</button>
-          </div>
-        </div>
-        <p id="equipment-summary"></p>
-        <table>
-          <thead>
-            <tr><th>Nom</th><th>Puissance (W)</th><th>Fonctionnement</th><th></th></tr>
-          </thead>
-          <tbody id="equipments"></tbody>
-        </table>
-      </section>
-    </main>
-
-    <footer>
-      Tarifs réglementés EDF issus de l'open data de la CRE. Les calculs sont faits dans votre navigateur.
-    </footer>
-
-    <script type="module" src="./src/main.ts"></script>
+    <div id="app"></div>
+    <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>

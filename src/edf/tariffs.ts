@@ -30,10 +30,11 @@ function isoDay(date: Date): string {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }
 
+// Some historical rows exist without prices (e.g. Tempo before it was reopened).
 function isActive(row: TariffRow, today: string): boolean {
   const start = toIsoDate(row.DATE_DEBUT);
   const end = row.DATE_FIN ? toIsoDate(row.DATE_FIN) : null;
-  return start <= today && (end === null || today <= end);
+  return row.PART_FIXE_TTC !== "" && start <= today && (end === null || today <= end);
 }
 
 export function findActiveRow(rows: TariffRow[], power: number, now: Date): TariffRow | undefined {
